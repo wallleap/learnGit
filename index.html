@@ -2,25 +2,36 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-  <link href="//gw.alicdn.com/tps/i2/TB1nmqyFFXXXXcQbFXXE5jB3XXX-114-114.png" rel="apple-touch-icon-precomposed">
-  <link href="//gw.alicdn.com/tps/i2/TB1nmqyFFXXXXcQbFXXE5jB3XXX-114-114.png" rel="Shortcut Icon" type="image/x-icon">
+  <link href="./img/favacon.png" rel="apple-touch-icon-precomposed">
+  <link href="./img/favacon.png" rel="Shortcut Icon" type="image/x-icon">
   <title>Git学习</title>
   <link rel="stylesheet" href="./css/base.css">
 </head>
 <body>
+  <nav class="catalogue">
+    <ul>
+      <li class="h1"></li>
+      <li></liu>
+      <li></li>
+      <li></li>
+    </ul>
+  </nav>
   <article>
     <h1>Git学习</h1>
     <h2>1、初始化环境</h2>
-    <p>● 下载Git、注册Github等账号</p>
-    <p>● 配置本地Git信息</p>
+    <p> 下载Git、注册Github等账号</p>
+    <p> 配置本地Git信息</p>
     <ul>
       <li><pre><code><span class="git">git</span> config --global user.name <span class="string">"Your Name"</span></code></pre></li>
       <li><pre><code><span class="git">git</span> config --global user.email <span class="string">"email@example.com"</span></code></pre></li>
     </ul>
     <p>添加了--global是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有--global的命令配置一遍即可</p>
-    <p>● 生成keygen</p>
+    <p> 生成keygen</p>
     <pre><code>ssh-keygen -t rsa -C <span class="string">"youremail@example.com"</span></code></pre>
     <p>将生成的id_rsa.pub中的公钥放到需要提交的服务器上进行验证</p>
+    <p> 测试连接</p>
+    <pre><code>ssh -T git@github.com</code></pre>
+    <p></p>
     <h2>2、了解Git基本命令</h2>
     <p>初始化仓库</p>
     <pre><code><span class="git">git</span> init</code></pre>
