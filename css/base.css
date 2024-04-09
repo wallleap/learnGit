@@ -156,7 +156,7 @@ pre::after {
   -ms-border-radius: 6px;
   -o-border-radius: 6px;
 }
-code::before {
+pre code::before {
   content: '';
   position: absolute;
   height: 12px;
