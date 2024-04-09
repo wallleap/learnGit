@@ -20,6 +20,10 @@
     <h1>Git 学习</h1>
     <h2>1、初始化环境</h2>
     <p> 下载 Git、注册 GitHub 等账号</p>
+    <pre>
+      <code class="comment"># 查看 git 版本</code>
+      <code><span class="git">git</span> --version</code>
+    </pre>
     <p> 配置本地 Git 信息</p>
     <ul>
       <li><pre><code><span class="git">git</span> config --global user.name <span class="string">"Your Name"</span></code></pre></li>
@@ -34,12 +38,12 @@
     <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
     <p>或使用 ed25519 算法</p>
     <pre><code>ssh-keygen -t ed25519 -C <span class="string">"SSH Key"</span></code></pre>
-    <p>将生成的 id_rsa.pub 中的公钥放到需要提交的服务器上（<code>~/.ssh/authorized_keys</code> 文件中）</p>
+    <p>将生成的 <code>~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code>~/.ssh/authorized_keys</code> 文件中）</p>
     <p> 测试连接</p>
     <pre><code>ssh -T git@github.com</code></pre>
-    <p></p>
-    <h2>2、了解Git基本命令</h2>
-    <p>工作区（working tree），暂存区（index /stage），本地仓库（repository）</p>
+    
+    <h2>2、了解 Git 基本命令</h2>
+    <p>工作区（working tree），暂存区（index /stage），本地仓库（repository），远程仓库（remote）</p>
     <p> 本地仓库</p>
     <p>初始化本地仓库</p>
     <pre><code><span class="git">git</span> init</code></pre>
@@ -59,10 +63,20 @@
       <code><span class="git">git</span> add .</code>
       <code class="comment"># 添加部分文件</code>
       <code><span class="git">git</span> add <span class="string">文件名|文件夹</span></code>
+      <code class="comment"># 删除部分文件</code>
+      <code><span class="git">git</span> rm --cached <span class="string">文件名|文件夹</span></code>
+      <code class="comment"># 恢复指定文件</code>
+      <code><span class="git">git</span> checkout <span class="string">文件名|文件夹</span></code>
     </pre>
     <p>将暂存区中的文件进行提交</p>
     <pre>
       <code><span class="git">git</span> commit -m <span class="string">"本次提交的说明"</span></code>
+    </pre>
+    <p> 暂存修改</p>
+    <pre>
+      <code><span class="git">git</span> stash</code>
+      <code class="comment"># 恢复并删除 stash</code>
+      <code><span class="git">git</span> stash pop</code>
     </pre>
     <p> 远程仓库</p>
     <p>添加远程仓库</p>
@@ -83,12 +97,12 @@
       <code><span class="git">git</span> push -u origin master</code>
       <code class="comment"># 还有其他参数，-f 可以强制推送，--all 推送所有分支，--tag 推送所有标签</code>
     </pre>
-    <p>拉取远程代码到本地仓库</p>
+    <p>拉取远程代码到工作区</p>
     <pre>
       <code><span class="git">git</span> pull origin main:main</code>
       <code class="comment"># origin 是远程仓库别名、前一个 main 是远程分支名、后一个 main 是本地分支名</code>
       <code class="comment"># --rebase 参数使用变基，-r 禁用变基强制使用合并</code>
-      <code class="comment"># fetch 下载最新更改，但不自动合并到当前分支</code>
+      <code class="comment"># fetch 下载最新更改到本地仓库，但不自动合并到当前分支</code>
       <code><span class="git">git</span> fetch</code>
     </pre>
     <p>克隆远程代码到本地仓库</p>
@@ -119,6 +133,19 @@
       <code><span class="git">git</span> reset --hard HEAD~100</code>
       <code class="comment"># 根据版本号回退</code>
       <code><span class="git">git</span> reset --hard <span class="string">版本号前几位或写全</span></code>
+      <code class="comment"># 撤消指定版本</code>
+      <code><span class="git">git</span> revert <span class="string">版本号前几位或写全</span></code>
+    </pre>
+    <p> 标签</p>
+    <pre>
+      <code class="comment"># 列出所有 tag</code>
+      <code><span class="git">git</span> tag</code>
+      <code class="comment"># 在当前版本新建 tag</code>
+      <code><span class="git">git</span> tag <span class="string">标签名</span></code>
+      <code class="comment"># 在某个版本新建 tag</code>
+      <code><span class="git">git</span> tag <span class="string">标签名</span> <span class="string">版本号</span></code>
+      <code class="comment"># 删除 tag</code>
+      <code><span class="git">git</span> tag -d <span class="string">标签名</span></code>
     </pre>
     <p> 分支管理</p>
     <pre>
@@ -134,6 +161,8 @@
       <code><span class="git">git</span> branch</code>
       <code class="comment"># 合并分支到当前分支</code>
       <code><span class="git">git</span> merge <span class="string">分支名</span></code>
+      <code class="comment"># 合并某个版本到当前分支</code>
+      <code><span class="git">git</span> cherry-pick <span class="string">版本号</span></code>
       <code class="comment"># 删除分支</code>
       <code><span class="git">git</span> branch -d <span class="string">分支名</span></code>
     </pre>
