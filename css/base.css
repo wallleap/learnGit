@@ -50,7 +50,7 @@ article {
 }
 
 article:hover {
-  box-shadow: 0 0 20px rgba(0, 0, 0, .7);
+  box-shadow: 0 0 20px rgba(0, 0, 0, .03);
   transform: translateY(-10px);
   -webkit-transform: translateY(-10px);
   -moz-transform: translateY(-10px);
