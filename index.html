@@ -17,86 +17,101 @@
     </ul>
   </nav>
   <article>
-    <h1>Git学习</h1>
+    <h1>Git 学习</h1>
     <h2>1、初始化环境</h2>
-    <p> 下载Git、注册Github等账号</p>
-    <p> 配置本地Git信息</p>
+    <p> 下载 Git、注册 GitHub 等账号</p>
+    <p> 配置本地 Git 信息</p>
     <ul>
       <li><pre><code><span class="git">git</span> config --global user.name <span class="string">"Your Name"</span></code></pre></li>
       <li><pre><code><span class="git">git</span> config --global user.email <span class="string">"email@example.com"</span></code></pre></li>
+      <li><pre>
+        <code class="comment"># 查看配置信息（按 <kbd>q</kbd> 退出）</code>
+        <code><span class="git">git</span> config --list</code>
+      </pre></li>
     </ul>
-    <p>添加了--global是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有--global的命令配置一遍即可</p>
-    <p> 生成keygen</p>
-    <pre><code>ssh-keygen -t rsa -C <span class="string">"youremail@example.com"</span></code></pre>
-    <p>将生成的id_rsa.pub中的公钥放到需要提交的服务器上进行验证</p>
+    <p>添加了 <code>--global</code> 是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有 <code>--global</code> 的命令配置一遍即可</p>
+    <p> 生成 keygen</p>
+    <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
+    <p>或使用 ed25519 算法</p>
+    <pre><code>ssh-keygen -t ed25519 -C <span class="string">"SSH Key"</span></code></pre>
+    <p>将生成的 id_rsa.pub 中的公钥放到需要提交的服务器上（<code>~/.ssh/authorized_keys</code> 文件中）</p>
     <p> 测试连接</p>
     <pre><code>ssh -T git@github.com</code></pre>
     <p></p>
     <h2>2、了解Git基本命令</h2>
-    <p>初始化仓库</p>
+    <p>工作区（working tree），暂存区（index /stage），本地仓库（repository）</p>
+    <p> 本地仓库</p>
+    <p>初始化本地仓库</p>
     <pre><code><span class="git">git</span> init</code></pre>
-    <p>创建.gitignore文件</p>
+    <p>创建 <code>.gitignore</code> 文件</p>
     <pre>
       <code><span class="bash">touch</span> .gitignore</code>
-      <code class="comment"># 修改这个文件，将需要忽略的文件名写入</code>
+      <code class="comment"># 修改这个文件，将需要忽略的文件名/目录写入</code>
       <code><span class="bash">vi</span> .gitignore</code>
     </pre>
     <p>查看仓库中文件状态</p>
     <pre>
       <code><span class="git">git</span> status</code>
     </pre>
+    <p> 暂存区</p>
     <p>添加当前目录下文件到暂存区</p>
     <pre>
       <code><span class="git">git</span> add .</code>
-    </pre>
-    <pre>
       <code class="comment"># 添加部分文件</code>
       <code><span class="git">git</span> add <span class="string">文件名|文件夹</span></code>
     </pre>
-    <p>工作区（working tree），暂存区（index /stage），本地仓库（repository）</p>
     <p>将暂存区中的文件进行提交</p>
     <pre>
       <code><span class="git">git</span> commit -m <span class="string">"本次提交的说明"</span></code>
     </pre>
+    <p> 远程仓库</p>
+    <p>添加远程仓库</p>
+    <pre>
+      <code><span class="git">git</span> remote add <span class="string">origin(名字)</span> <span class="string">仓库链接(ssh或https)</span></code>
+    </pre>
     <p>查看远程仓库</p>
     <pre>
       <code><span class="git">git</span> remote -v</code>
+      <code class="comment"># 删除某个远程连接</code>
+      <code><span class="git">git</span> remote remove <span class="string">origin(名字)</span></code>
     </pre>
-    <p>添加远程仓库</p>
+    <p>推送本地代码到远程仓库</p>
     <pre>
-      <code><span class="git">git</span> remote add origin <span class="string">仓库链接(ssh或https)</span></code>
-    </pre>
-    <p>推送代码</p>
-    <pre>
-      <code><span class="git">git</span> push origin master</code>
-      <code class="comment"># origin是远程仓库别名、master是分支名</code>
-      <code class="comment"># 第一次可以多加一个参数</code>
+      <code><span class="git">git</span> push origin main:main</code>
+      <code class="comment"># origin 是远程仓库别名、前一个 main 是本地分支名、后一个 main 是远程分支名</code>
+      <code class="comment"># 第一次可以多加一个参数 -u，将设置默认推送目标</code>
       <code><span class="git">git</span> push -u origin master</code>
+      <code class="comment"># 还有其他参数，-f 可以强制推送，--all 推送所有分支，--tag 推送所有标签</code>
     </pre>
-    <p>拉取代码</p>
+    <p>拉取远程代码到本地仓库</p>
     <pre>
-      <code><span class="git">git</span> pull origin master</code>
+      <code><span class="git">git</span> pull origin main:main</code>
+      <code class="comment"># origin 是远程仓库别名、前一个 main 是远程分支名、后一个 main 是本地分支名</code>
+      <code class="comment"># --rebase 参数使用变基，-r 禁用变基强制使用合并</code>
+      <code class="comment"># fetch 下载最新更改，但不自动合并到当前分支</code>
+      <code><span class="git">git</span> fetch</code>
     </pre>
-    <p>克隆代码</p>
+    <p>克隆远程代码到本地仓库</p>
     <pre>
-      <code><span class="git">git</span> clone <span class="string">仓库链接</span></code>
+      <code><span class="git">git</span> clone <span class="string">仓库链接</span> <span class="string">目录名</span></code>
+      <code class="comment"># -b main 指定克隆分支，--depth 1 指定克隆深度</code>
     </pre>
-    <p>查看文件修改内容</p>
+    <p> 查看文件修改内容</p>
     <pre>
       <code><span class="git">git</span> diff <span class="string">文件名</span></code>
     </pre>
-    <p>查看历史记录</p>
+    <p> 查看历史记录</p>
     <pre>
       <code><span class="git">git</span> log</code>
       <code><span class="git">git</span> log --pretty=oneline</code>
     </pre>
-    <p>查看命令记录</p>
+    <p> 查看引用日志</p>
     <pre>
       <code><span class="git">git</span> reflog</code>
     </pre>
-    <p>版本回退</p>
+    <p> 版本回退</p>
     <pre>
-      <code class="comment"># 回退到上一个版本(Git中HEAD代表当前版本)</code>
+      <code class="comment"># 回退到上一个版本(Git 中 HEAD 代表当前版本)</code>
       <code><span class="git">git</span> reset --hard HEAD^</code>
       <code class="comment"># 回退到上上个版本</code>
       <code><span class="git">git</span> reset --hard HEAD^^</code>
@@ -105,24 +120,22 @@
       <code class="comment"># 根据版本号回退</code>
       <code><span class="git">git</span> reset --hard <span class="string">版本号前几位或写全</span></code>
     </pre>
-    <p>分支管理</p>
+    <p> 分支管理</p>
     <pre>
       <code class="comment"># 创建分支</code>
       <code><span class="git">git</span> branch <span class="string">分支名</span></code>
       <code class="comment"># 切换分支</code>
-      <code class="comment"># git checkout 分支名</code>
-      <code><span class="git">git</span> switch -c <span class="string">分支名</span></code>
+      <code><span class="git">git</span> checkout <span class="string">分支名</span></code>
+      <code><span class="git">git</span> switch <span class="string">分支名</span></code>
       <code class="comment"># 可以合写为一条</code>
       <code><span class="git">git</span> checkout -b <span class="string">分支名</span></code>
-      <code class="comment"># 查看当前分支</code>
+      <code><span class="git">git</span> switch -c <span class="string">分支名</span></code>
+      <code class="comment"># 查看分支，-r 参数查看远程分支</code>
       <code><span class="git">git</span> branch</code>
-      <code class="comment"># 切换回master分支</code>
-      <code class="comment"># git checkout master 或</code>
-      <code><span class="git">git</span> switch master</code>
-      <code class="comment"># 合并分支</code>
+      <code class="comment"># 合并分支到当前分支</code>
       <code><span class="git">git</span> merge <span class="string">分支名</span></code>
       <code class="comment"># 删除分支</code>
-      <code><span class="git">git</span> branch -d dev</code>
+      <code><span class="git">git</span> branch -d <span class="string">分支名</span></code>
     </pre>
   </article>
 </body>
