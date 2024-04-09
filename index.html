@@ -33,12 +33,12 @@
         <code><span class="git">git</span> config --list</code>
       </pre></li>
     </ul>
-    <p>添加了 <code>--global</code> 是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有 <code>--global</code> 的命令配置一遍即可</p>
+    <p>添加了 <code class="inline">--global</code> 是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有 <code class="inline">--global</code> 的命令配置一遍即可</p>
     <p> 生成 keygen</p>
     <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
     <p>或使用 ed25519 算法</p>
     <pre><code>ssh-keygen -t ed25519 -C <span class="string">"SSH Key"</span></code></pre>
-    <p>将生成的 <code>~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code>~/.ssh/authorized_keys</code> 文件中）</p>
+    <p>将生成的 <code class="inline">~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code class="inline">~/.ssh/authorized_keys</code> 文件中）</p>
     <p> 测试连接</p>
     <pre><code>ssh -T git@github.com</code></pre>
     
