@@ -30,9 +30,11 @@
     <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
     <p>或使用 ed25519 算法</p>
     <pre><code>ssh-keygen -t ed25519 -C <span class="string">"SSH Key"</span></code></pre>
-    <p>将生成的 <code class="inline">~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code class="inline">~/.ssh/authorized_keys</code> 文件中）</p>
-    <p> 测试连接</p>
+    <p>将生成的 <code class="inline">~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code class="inline">~/.ssh/authorized_keys</code> 文件中）或者在线平台的设置 <strong>SSH keys</strong> 新建一个，拷贝公钥内容上去</p>
+    <p> 测试连接（例如 GitHub）</p>
     <pre><code>ssh -T git@github.com</code></pre>
+    <p>输出如下内容就代表成功</p>
+    <pre><code>Hi username! You've successfully authenticated, but GitHub does not provide shell access.</code></pre>
     
     <h2>2、了解 Git 基本命令</h2>
     <p>工作区（working tree），暂存区（index /stage），本地仓库（repository），远程仓库（remote）</p>
