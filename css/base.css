@@ -4,9 +4,10 @@
 }
 
 :root {
-  --theme-color: #0ff;
+  --theme-color: #212121;
   --title-color: #dc143c;
-  --text-color: #333;
+  --text-color: #424242;
+  --list-color: #666;
 }
 
 body {
@@ -15,7 +16,7 @@ body {
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
-  background: rgba(0,0,0,.1);
+  background: rgba(0, 0, 0, .1);
 }
 
 ::selection {
@@ -24,7 +25,7 @@ body {
 }
 
 article {
-  font-family: "微软雅黑" serif;
+  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
   background-color: #fff;
   width: 970px;
   padding: 20px;
@@ -38,7 +39,7 @@ article {
 }
 
 
-@media(max-width:750px)  and (min-width:360px) {
+@media(max-width:750px) and (min-width:360px) {
   body {
     width: 100%;
     justify-content: start;
@@ -62,13 +63,19 @@ h1 {
   text-align: center;
   font-size: 40px;
   color: var(--theme-color);
+  margin-bottom: 1rem;
 }
 
-h2, h3, h4 {
+section {
+  margin-bottom: 1.8rem;
+}
+
+h2,
+h3,
+h4 {
   position: relative;
   display: inline-block;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-bottom: .2em;
   color: var(--title-color);
 }
 
@@ -91,15 +98,25 @@ h2::after {
   -ms-transition: .5s;
   -o-transition: .5s;
 }
+
 h2:hover::after {
   width: 100%;
 }
 
 ul {
+  color: var(--list-color);
+  padding-left: 1em;
+  margin-top: .4em;
+  line-height: 1.6em;
+}
+
+ul.no-list-style {
   list-style: none;
+  padding-left: 0;
 }
 
 p {
+  color: var(--text-color);
   margin-top: 1rem;
 }
 
@@ -112,8 +129,9 @@ code.inline {
 }
 
 pre {
-  padding: 26px 10px 10px 10px;
+  padding: 2em .8em .8em;
   margin: 5px 0;
+  margin-top: .4rem;
   border-radius: 5px;
   position: relative;
   white-space: pre-line;
@@ -128,6 +146,7 @@ pre {
   -ms-transition: .3s;
   -o-transition: .3s;
 }
+
 pre::before {
   content: '';
   position: absolute;
@@ -142,6 +161,7 @@ pre::before {
   -ms-border-radius: 6px;
   -o-border-radius: 6px;
 }
+
 pre::after {
   content: '';
   position: absolute;
@@ -156,6 +176,7 @@ pre::after {
   -ms-border-radius: 6px;
   -o-border-radius: 6px;
 }
+
 pre code::before {
   content: '';
   position: absolute;
@@ -174,6 +195,7 @@ pre code::before {
   -ms-transform: translateX(10px);
   -o-transform: translateX(10px);
 }
+
 pre code.comment {
   color: #969896;
 }
@@ -182,9 +204,11 @@ pre code span.git {
   font-weight: bold;
   color: #dc143c;
 }
+
 pre code span.string {
   color: #c3e88d;
 }
+
 pre code span.bash {
   color: #FFC83D;
 }

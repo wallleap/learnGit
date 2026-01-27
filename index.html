@@ -1,124 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
+
 <head>
-  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <link href="./img/favacon.png" rel="apple-touch-icon-precomposed">
   <link href="./img/favacon.png" rel="Shortcut Icon" type="image/x-icon">
-  <title>Git学习</title>
+  <title>Git 学习</title>
   <link rel="stylesheet" href="./css/base.css">
 </head>
+
 <body>
   <article>
     <h1>Git 学习</h1>
-    <h2>1、初始化环境</h2>
-    <p> 下载 Git、注册 GitHub 等账号</p>
-    <pre>
+    <section>
+      <h2>1、初始化环境</h2>
+      <p> 下载 Git、注册 GitHub 等账号</p>
+      <pre>
       <code class="comment"># 查看 git 版本</code>
       <code><span class="git">git</span> --version</code>
     </pre>
-    <p> 配置本地 Git 信息</p>
-    <ul>
-      <li><pre><code><span class="git">git</span> config --global user.name <span class="string">"Your Name"</span></code></pre></li>
-      <li><pre><code><span class="git">git</span> config --global user.email <span class="string">"email@example.com"</span></code></pre></li>
-      <li><pre>
+      <p> 配置本地 Git 信息</p>
+      <ul class="no-list-style">
+        <li>
+          <pre><code><span class="git">git</span> config --global user.name <span class="string">"Your Name"</span></code></pre>
+        </li>
+        <li>
+          <pre><code><span class="git">git</span> config --global user.email <span class="string">"email@example.com"</span></code></pre>
+        </li>
+        <li>
+          <pre>
         <code class="comment"># 查看配置信息（按 <kbd>q</kbd> 退出）</code>
         <code><span class="git">git</span> config --list</code>
-      </pre></li>
-    </ul>
-    <p>添加了 <code class="inline">--global</code> 是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有 <code class="inline">--global</code> 的命令配置一遍即可</p>
-    <p> 生成 keygen</p>
-    <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
-    <p>或使用 ed25519 算法</p>
-    <pre><code>ssh-keygen -t ed25519 -C <span class="string">"SSH Key"</span></code></pre>
-    <p>将生成的 <code class="inline">~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code class="inline">~/.ssh/authorized_keys</code> 文件中）或者在线平台的设置 <strong>SSH keys</strong> 新建一个，拷贝公钥内容上去</p>
-    <p> 测试连接（例如 GitHub）</p>
-    <pre><code>ssh -T git@github.com</code></pre>
-    <p>输出如下内容就代表成功</p>
-    <pre><code>Hi username! You've successfully authenticated, but GitHub does not provide shell access.</code></pre>
-    
-    <h2>2、了解 Git 基本命令</h2>
-    <p>工作区（working tree），暂存区（index /stage），本地仓库（repository），远程仓库（remote）</p>
-    <p> 本地仓库</p>
-    <p>初始化本地仓库</p>
-    <pre><code><span class="git">git</span> init</code></pre>
-    <p>创建 <code>.gitignore</code> 文件</p>
-    <pre>
+      </pre>
+        </li>
+      </ul>
+      <p>添加了 <code class="inline">--global</code> 是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有 <code class="inline">--global</code>
+        的命令配置一遍即可</p>
+      <p> 生成 keygen</p>
+      <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
+      <p>或使用 ed25519 算法</p>
+      <pre><code>ssh-keygen -t ed25519 -C <span class="string">"SSH Key"</span></code></pre>
+      <p>将生成的 <code class="inline">~/.ssh/id_rsa.pub</code> 中的公钥放到需要提交的服务器上（<code
+          class="inline">~/.ssh/authorized_keys</code> 文件中）或者在线平台的设置 <strong>SSH keys</strong> 新建一个，拷贝公钥内容上去</p>
+      <p> 测试连接（例如 GitHub）</p>
+      <pre><code>ssh -T git@github.com</code></pre>
+      <p>输出如下内容就代表成功</p>
+      <pre><code>Hi username! You've successfully authenticated, but GitHub does not provide shell access.</code></pre>
+    </section>
+
+    <section>
+      <h2>2、了解 Git 基本命令</h2>
+      <p>工作区（working tree），暂存区（index /stage），本地仓库（repository），远程仓库（remote）</p>
+      <p> 本地仓库</p>
+      <p>初始化本地仓库</p>
+      <pre><code><span class="git">git</span> init</code></pre>
+      <p>创建 <code>.gitignore</code> 文件</p>
+      <pre>
       <code><span class="bash">touch</span> .gitignore</code>
       <code class="comment"># 修改这个文件，将需要忽略的文件名/目录写入</code>
       <code><span class="bash">vi</span> .gitignore</code>
     </pre>
-    <p>查看仓库中文件状态</p>
-    <pre>
+      <p>查看仓库中文件状态</p>
+      <pre>
       <code><span class="git">git</span> status</code>
     </pre>
-    <p> 暂存区</p>
-    <p>添加当前目录下文件到暂存区</p>
-    <pre>
+      <p> 暂存区</p>
+      <p>添加当前目录下文件到暂存区</p>
+      <pre>
       <code><span class="git">git</span> add .</code>
       <code class="comment"># 添加部分文件</code>
       <code><span class="git">git</span> add <span class="string">文件名|文件夹</span></code>
       <code class="comment"># 删除部分文件</code>
       <code><span class="git">git</span> rm --cached <span class="string">文件名|文件夹</span></code>
-      <code class="comment"># 恢复指定文件</code>
+      <code class="comment"># 恢复指定文件 或用 restore</code>
       <code><span class="git">git</span> checkout <span class="string">文件名|文件夹</span></code>
     </pre>
-    <p>将暂存区中的文件进行提交</p>
-    <pre>
+      <p>将暂存区中的文件进行提交</p>
+      <pre>
       <code><span class="git">git</span> commit -m <span class="string">"本次提交的说明"</span></code>
+      <code class="comment"># 修正最近一次提交（会保留原提交内容，仅补充文件/修改提交信息）</code>
+      <code><span class="git">git</span> commit --amend</code>
     </pre>
-    <p> 暂存修改</p>
-    <pre>
+      <p> 暂存修改</p>
+      <pre>
       <code><span class="git">git</span> stash</code>
       <code class="comment"># 恢复并删除 stash</code>
       <code><span class="git">git</span> stash pop</code>
     </pre>
-    <p> 远程仓库</p>
-    <p>添加远程仓库</p>
-    <pre>
+      <p> 远程仓库</p>
+      <p>添加远程仓库</p>
+      <pre>
       <code><span class="git">git</span> remote add <span class="string">origin(名字)</span> <span class="string">仓库链接(ssh或https)</span></code>
     </pre>
-    <p>查看远程仓库</p>
-    <pre>
+      <p>查看远程仓库</p>
+      <pre>
       <code><span class="git">git</span> remote -v</code>
       <code class="comment"># 删除某个远程连接</code>
       <code><span class="git">git</span> remote remove <span class="string">origin(名字)</span></code>
     </pre>
-    <p>推送本地代码到远程仓库</p>
-    <pre>
+      <p>推送本地代码到远程仓库</p>
+      <pre>
       <code><span class="git">git</span> push origin main:main</code>
       <code class="comment"># origin 是远程仓库别名、前一个 main 是本地分支名、后一个 main 是远程分支名</code>
       <code class="comment"># 第一次可以多加一个参数 -u，将设置默认推送目标</code>
       <code><span class="git">git</span> push -u origin master</code>
       <code class="comment"># 还有其他参数，-f 可以强制推送，--all 推送所有分支，--tag 推送所有标签</code>
     </pre>
-    <p>拉取远程代码到工作区</p>
-    <pre>
+      <p>拉取远程代码到工作区</p>
+      <pre>
       <code><span class="git">git</span> pull origin main:main</code>
       <code class="comment"># origin 是远程仓库别名、前一个 main 是远程分支名、后一个 main 是本地分支名</code>
       <code class="comment"># --rebase 参数使用变基，-r 禁用变基强制使用合并</code>
       <code class="comment"># fetch 下载最新更改到本地仓库，但不自动合并到当前分支</code>
       <code><span class="git">git</span> fetch</code>
     </pre>
-    <p>克隆远程代码到本地仓库</p>
-    <pre>
+      <p>克隆远程代码到本地仓库</p>
+      <pre>
       <code><span class="git">git</span> clone <span class="string">仓库链接</span> <span class="string">目录名</span></code>
       <code class="comment"># -b main 指定克隆分支，--depth 1 指定克隆深度</code>
     </pre>
-    <p> 查看文件修改内容</p>
-    <pre>
+      <p> 查看文件修改内容</p>
+      <pre>
       <code><span class="git">git</span> diff <span class="string">文件名</span></code>
     </pre>
-    <p> 查看历史记录</p>
-    <pre>
+      <p> 查看历史记录</p>
+      <pre>
       <code><span class="git">git</span> log</code>
       <code><span class="git">git</span> log --pretty=oneline</code>
     </pre>
-    <p> 查看引用日志</p>
-    <pre>
+      <p> 查看引用日志</p>
+      <pre>
       <code><span class="git">git</span> reflog</code>
     </pre>
-    <p> 版本回退</p>
-    <pre>
+      <p> 版本回退</p>
+      <pre>
       <code class="comment"># 回退到上一个版本(Git 中 HEAD 代表当前版本)</code>
       <code><span class="git">git</span> reset --hard HEAD^</code>
       <code class="comment"># 回退到上上个版本</code>
@@ -130,8 +146,8 @@
       <code class="comment"># 撤消指定版本</code>
       <code><span class="git">git</span> revert <span class="string">版本号前几位或写全</span></code>
     </pre>
-    <p> 标签</p>
-    <pre>
+      <p> 标签</p>
+      <pre>
       <code class="comment"># 列出所有 tag</code>
       <code><span class="git">git</span> tag</code>
       <code class="comment"># 在当前版本新建 tag</code>
@@ -140,26 +156,145 @@
       <code><span class="git">git</span> tag <span class="string">标签名</span> <span class="string">版本号</span></code>
       <code class="comment"># 删除 tag</code>
       <code><span class="git">git</span> tag -d <span class="string">标签名</span></code>
-    </pre>
-    <p> 分支管理</p>
-    <pre>
-      <code class="comment"># 创建分支</code>
-      <code><span class="git">git</span> branch <span class="string">分支名</span></code>
-      <code class="comment"># 切换分支</code>
-      <code><span class="git">git</span> checkout <span class="string">分支名</span></code>
-      <code><span class="git">git</span> switch <span class="string">分支名</span></code>
-      <code class="comment"># 可以合写为一条</code>
-      <code><span class="git">git</span> checkout -b <span class="string">分支名</span></code>
-      <code><span class="git">git</span> switch -c <span class="string">分支名</span></code>
-      <code class="comment"># 查看分支，-r 参数查看远程分支</code>
-      <code><span class="git">git</span> branch</code>
-      <code class="comment"># 合并分支到当前分支</code>
-      <code><span class="git">git</span> merge <span class="string">分支名</span></code>
-      <code class="comment"># 合并某个版本到当前分支</code>
-      <code><span class="git">git</span> cherry-pick <span class="string">版本号</span></code>
-      <code class="comment"># 删除分支</code>
-      <code><span class="git">git</span> branch -d <span class="string">分支名</span></code>
-    </pre>
+      </pre>
+      <p> 分支管理</p>
+      <pre>
+        <code class="comment"># 创建分支</code>
+        <code><span class="git">git</span> branch <span class="string">分支名</span></code>
+        <code class="comment"># 切换分支</code>
+        <code><span class="git">git</span> checkout <span class="string">分支名</span></code>
+        <code><span class="git">git</span> switch <span class="string">分支名</span></code>
+        <code class="comment"># 可以合写为一条</code>
+        <code><span class="git">git</span> checkout -b <span class="string">分支名</span></code>
+        <code><span class="git">git</span> switch -c <span class="string">分支名</span></code>
+        <code class="comment"># 查看分支，-r 参数查看远程分支</code>
+        <code><span class="git">git</span> branch</code>
+        <code class="comment"># 合并分支到当前分支</code>
+        <code><span class="git">git</span> merge <span class="string">分支名</span></code>
+        <code class="comment"># 合并某个版本到当前分支</code>
+        <code><span class="git">git</span> cherry-pick <span class="string">版本号</span></code>
+        <code class="comment"># 删除分支</code>
+        <code><span class="git">git</span> branch -d <span class="string">分支名</span></code>
+      </pre>
+    </section>
+
+    <section>
+      <h2>3. 冲突解决</h2>
+      <p>避免使用 <code class="inline">merge</code>，而默认的 <code class="inline">git pull</code> 为 <code
+          class="inline">git fetch</code> + <code class="inline">git merge</code></p>
+      <p> 手动使用 rebase</p>
+      <pre>
+        <code class="comment"># 先暂存代码</code>
+        <code><span class="git">git</span> stash</code>
+        <code class="comment"># 分开 fetch 并 rebase 或使用 git pull --rebase</code>
+        <code><span class="git">git</span> fetch</code>
+        <code><span class="git">git</span> rebase</code>
+        <code class="comment"># 查看封存记录</code>
+        <code><span class="git">git</span> stash list</code>
+        <code class="comment"># 恢复最新变更，或使用 pop</code>
+        <code><span class="git">git</span> stash apply</code>
+        <code class="comment"># 恢复列表中指定变更</code>
+        <code><span class="git">git</span> stash apply<span class="string">记录</span></code>
+      </pre>
+    </section>
+
+    <section>
+      <h2>4. 大小写问题</h2>
+      <p>在大小写敏感的语言中，可能会出错，不建议修改默认配置</p>
+      <p> 直接先修改成其他的单词再修改成对应大小写</p>
+      <p>例如 <code class="inline">base</code> 先修改成 <code class="inline">temp</code> 再修改成 <code class="inline">Base</code>
+      </p>
+      <p>之后再提交</p>
+    </section>
+
+    <section>
+      <h2>5. 常用分支名</h2>
+      <p> 核心主分支（仓库的基础分支，长期存在）</p>
+      <ul>
+        <li>生产环境代码 <code class="inline">main</code> / <code class="inline">master</code></li>
+        <li>开发完成的功能代码 <code class="inline">develop</code> / <code class="inline">dev</code></li>
+      </ul>
+      <p> 临时开发分支（完成特定任务后删除，短期存在）</p>
+      <ul>
+        <li>功能分支 <code class="inline">feature/xxx</code> 或 <code class="inline">feat/xxx</code>，开发新需求、新功能、新特性（基于 develop
+          分支创建，完成后合并回 develop）</li>
+        <li>修复分支 <code class="inline">bugfix/xxx</code> 或 <code class="inline">fix/xxx</code>，基于 develop 分支创建，完成后合并回
+          develop</li>
+        <li>线上紧急修复分支 <code class="inline">hotfix/xxx</code> 或 <code class="inline">hf/xxx</code>，基于 main 分支创建，完成后同时合并回
+          main 和 develop 分支</li>
+        <li>发布分支 <code class="inline">release/xxx</code> 或 <code class="inline">rel/xxx</code>，基于 develop 分支创建，完成后合并回
+          main 和 develop</li>
+      </ul>
+      <p> 其他特殊场景分支</p>
+      <ul>
+        <li>测试环境 <code class="inline">test</code> / <code class="inline">testing</code></li>
+        <li>项目文档 <code class="inline">docs</code></li>
+        <li>代码重构 <code class="inline">refactor</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>6. Conventional Commits（约定式提交） 规范</h2>
+      <p> <code class="inline">feat</code> - 新增功能（feature）</p>
+      <ul>
+        <li><code class="inline">feat: 新增用户登录功能</code></li>
+        <li><code class="inline">feat: 实现商品列表分页查询</code></li>
+        <li><code class="inline">feat: 添加微信支付回调接口</code></li>
+      </ul>
+      <p> <code class="inline">fix</code> - 修复 Bug</p>
+      <ul>
+        <li><code class="inline">fix: 修复登录验证码不显示的问题</code></li>
+        <li><code class="inline">fix: 解决订单金额计算错误 Bug</code></li>
+        <li><code class="inline">fix: 修复线上支付失败的紧急问题</code></li>
+      </ul>
+      <p> <code class="inline">docs</code> - 文档更新</p>
+      <ul>
+        <li><code class="inline">docs: 更新 README 中的部署步骤</code></li>
+        <li><code class="inline">docs: 补充接口文档的参数说明</code></li>
+        <li><code class="inline">docs: 完善代码中的注释说明</code></li>
+      </ul>
+      <p> <code class="inline">style</code> - 代码格式调整（不影响功能）</p>
+      <ul>
+        <li><code class="inline">style: 格式化代码缩进（符合 ESLint 规范）</code></li>
+        <li><code class="inline">style: 调整变量命名，统一驼峰式</code></li>
+        <li><code class="inline">style: 删除多余的空行和注释</code></li>
+      </ul>
+      <p> <code class="inline">refactor</code> - 代码重构（不影响功能）</p>
+      <ul>
+        <li><code class="inline">refactor: 重构用户服务模块，提取公共工具类</code></li>
+        <li><code class="inline">refactor: 优化接口请求封装，简化代码逻辑</code></li>
+        <li><code class="inline">refactor: 拆分超大组件，提高可维护性</code></li>
+      </ul>
+      <p> <code class="inline">test</code> - 测试相关</p>
+      <ul>
+        <li><code class="inline">test: 为用户登录功能添加单元测试</code></li>
+        <li><code class="inline">test: 完善订单模块的集成测试用例</code></li>
+        <li><code class="inline">test: 修复测试代码中的断言错误</code></li>
+      </ul>
+      <p> <code class="inline">chore</code> - 构建 / 工程配置 / 辅助工具变更（不涉及业务代码）</p>
+      <ul>
+        <li><code class="inline">chore: 升级 axios 依赖到 1.6.0 版本</code></li>
+        <li><code class="inline">chore: 配置 Webpack 打包优化参数</code></li>
+        <li><code class="inline">chore: 添加 .gitignore 忽略日志文件</code></li>
+        <li><code class="inline">chore: 更新 ESLint 配置规则</code></li>
+      </ul>
+      <p> <code class="inline">perf</code> - 性能优化</p>
+      <ul>
+        <li><code class="inline">perf: 优化商品列表查询速度，添加缓存</code></li>
+        <li><code class="inline">perf: 减少 DOM 操作，提升页面渲染性能</code></li>
+      </ul>
+      <p> <code class="inline">revert</code> - 回滚提交</p>
+      <ul>
+        <li><code class="inline">revert: 回滚 "feat: 新增用户登录功能"</code></li>
+        <li><code class="inline">revert: 撤销 fix: 修复订单金额计算错误 Bug</code></li>
+      </ul>
+      <p> <code class="inline">ci</code> - 持续集成 / 持续部署配置变更</p>
+      <ul>
+        <li><code class="inline">ci: 配置 GitHub Actions 自动打包部署</code></li>
+        <li><code class="inline">ci: 调整 GitLab CI 测试步骤的超时时间</code></li>
+      </ul>
+    </section>
   </article>
 </body>
+
 </html>
