@@ -83,7 +83,7 @@ h2::after {
   content: '';
   position: absolute;
   left: 0;
-  top: 1.3em;
+  top: 1.5em;
   width: 1em;
   height: 3px;
   border-radius: 1.5px;
@@ -103,6 +103,12 @@ h2:hover::after {
   width: 100%;
 }
 
+h3 {
+  display: block;
+  margin-top: 1.2rem;
+  margin-bottom: .8em;
+}
+
 ul {
   color: var(--list-color);
   padding-left: 1em;
@@ -115,9 +121,14 @@ ul.no-list-style {
   padding-left: 0;
 }
 
+ul li {
+  margin-bottom: .4em;
+}
+
 p {
   color: var(--text-color);
-  margin-top: 1rem;
+  margin-top: .5rem;
+  line-height: 1.6em;
 }
 
 code.inline {
@@ -196,13 +207,18 @@ pre code::before {
   -o-transform: translateX(10px);
 }
 
+pre code {
+  font-family: "Fira Code", "Fira Mono", "Consolas", "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 pre code.comment {
   color: #969896;
 }
 
 pre code span.git {
-  font-weight: bold;
-  color: #dc143c;
+  color: #ff5d3d;
 }
 
 pre code span.string {
