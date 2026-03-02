@@ -90,14 +90,18 @@
           <code><span class="git">git</span> add .</code>
           <code class="comment"># 添加部分文件</code>
           <code><span class="git">git</span> add <span class="string">文件名|文件夹</span></code>
-          <code class="comment"># 删除部分文件</code>
+          <code class="comment"># 从暂存区删除文件，但保留工作区文件</code>
           <code><span class="git">git</span> rm --cached <span class="string">文件名|文件夹</span></code>
-          <code class="comment"># 恢复指定文件 或用 restore</code>
-          <code><span class="git">git</span> checkout <span class="string">文件名|文件夹</span></code>
+          <code class="comment"># 恢复指定文件 restore 或用 checkout</code>
+          <code><span class="git">git</span> restore <span class="string">文件名|文件夹</span></code>
+          <code><span class="git">git</span> restore .</code>
         </pre>
         <p>将暂存区中的文件进行提交</p>
         <pre>
+          <code class="comment"># 直接在 -m 后写提交说明</code>
           <code><span class="git">git</span> commit -m <span class="string">"本次提交的说明"</span></code>
+          <code class="comment"># 使用默认编辑器编写提交说明，保存后关闭文件即可</code>
+          <code><span class="git">git</span> commit</code>
           <code class="comment"># 修正最近一次提交（会保留原提交内容，仅补充文件/修改提交信息）</code>
           <code><span class="git">git</span> commit --amend</code>
         </pre>
@@ -117,24 +121,26 @@
         <p>查看远程仓库</p>
         <pre>
           <code><span class="git">git</span> remote -v</code>
-          <code class="comment"># 删除某个远程连接</code>
+        </pre>
+        <p>删除远程仓库链接</p>
+        <pre>
           <code><span class="git">git</span> remote remove <span class="string">origin(名字)</span></code>
         </pre>
         <p>推送本地代码到远程仓库</p>
         <pre>
-          <code><span class="git">git</span> push origin main:main</code>
-          <code class="comment"># origin 是远程仓库别名、前一个 main 是本地分支名、后一个 main 是远程分支名</code>
-          <code class="comment"># 第一次可以多加一个参数 -u，将设置默认推送目标</code>
-          <code><span class="git">git</span> push -u origin master</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> main:main</code>
+          <code class="comment"># origin 是远程仓库别名、前一个 main 是本地分支名、后一个 main 是远程分支名，相同时可省略后半部分</code>
+          <code class="comment"># 第一次可以多加一个参数 -u，将设置默认推送目标，后续可以直接使用 git push</code>
+          <code><span class="git">git</span> push -u <span class="string">origin</span> main</code>
           <code class="comment"># 还有其他参数，-f 可以强制推送，--all 推送所有分支，--tag 推送所有标签</code>
         </pre>
         <p>拉取远程代码到工作区</p>
         <pre>
-          <code><span class="git">git</span> pull origin main:main</code>
+          <code><span class="git">git</span> pull <span class="string">origin</span> main:main</code>
           <code class="comment"># origin 是远程仓库别名、前一个 main 是远程分支名、后一个 main 是本地分支名</code>
           <code class="comment"># --rebase 参数使用变基，-r 禁用变基强制使用合并</code>
           <code class="comment"># fetch 下载最新更改到本地仓库，但不自动合并到当前分支</code>
-          <code><span class="git">git</span> fetch</code>
+          <code><span class="git">git</span> fetch <span class="string">origin</span></code>
         </pre>
         <p>克隆远程代码到本地仓库</p>
         <pre>
@@ -164,10 +170,10 @@
           <code><span class="git">git</span> reset --hard HEAD~100</code>
           <code class="comment"># 根据版本号回退</code>
           <code><span class="git">git</span> reset --hard <span class="string">版本号前几位或写全</span></code>
-          <code class="comment"># 撤消指定版本</code>
+          <code class="comment"># 撤销指定版本</code>
           <code><span class="git">git</span> revert <span class="string">版本号前几位或写全</span></code>
         </pre>
-        <p>如果需要回到上个版本，应该使用如下操作</p>
+        <p>如果需要“回到”某个版本，应该使用如下操作（从指定版本恢复文件到工作区）</p>
         <pre>
           <code><span class="git">git</span> restore --source <span class="string">版本号前几位或写全</span> .</code>
         </pre>
@@ -177,11 +183,20 @@
           <code><span class="git">git</span> tag</code>
           <code class="comment"># 在当前版本新建 tag</code>
           <code><span class="git">git</span> tag <span class="string">标签名</span></code>
+          <code class="comment"># 带注释的标签</code>
+          <code><span class="git">git</span> tag -a <span class="string">标签名</span> -m <span class="string">"注释"</span></code>
           <code class="comment"># 在某个版本新建 tag</code>
           <code><span class="git">git</span> tag <span class="string">标签名</span> <span class="string">版本号</span></code>
+          <code class="comment"># 推送 tag 到远程仓库</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> <span class="string">标签名</span></code>
+          <code class="comment"># 推送所有 tag</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> --tags</code>
           <code class="comment"># 删除 tag</code>
           <code><span class="git">git</span> tag -d <span class="string">标签名</span></code>
-          </pre>
+          <code class="comment"># 删除远程 tag</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> --delete <span class="string">标签名</span></code>
+          <code><span class="git">git</span> push <span class="string">origin</span> :<span class="string">标签名</span> <span class="comment"># 简写形式</span></code>
+        </pre>
         <h3> 分支管理</h3>
         <pre>
           <code class="comment"># 创建分支</code>
@@ -189,19 +204,24 @@
           <code class="comment"># 切换分支</code>
           <code><span class="git">git</span> checkout <span class="string">分支名</span></code>
           <code><span class="git">git</span> switch <span class="string">分支名</span></code>
-          <code class="comment"># 可以合写为一条</code>
+          <code class="comment"># 可以简写为一条</code>
           <code><span class="git">git</span> checkout -b <span class="string">分支名</span></code>
           <code><span class="git">git</span> switch -c <span class="string">分支名</span></code>
           <code class="comment"># 切换到上一分支</code>
           <code><span class="git">git</span> switch -</code>
-          <code class="comment"># 查看分支，-r 参数查看远程分支</code>
+          <code class="comment"># 查看分支，-r 参数查看远程分支，-a 参数查看所有分支，-v 参数查看分支+最后一次提交信息</code>
           <code><span class="git">git</span> branch</code>
           <code class="comment"># 合并分支到当前分支</code>
           <code><span class="git">git</span> merge <span class="string">分支名</span></code>
-          <code class="comment"># 合并某个版本到当前分支</code>
+          <code class="comment"># 挑选某个提交合并到当前分支</code>
           <code><span class="git">git</span> cherry-pick <span class="string">版本号</span></code>
-          <code class="comment"># 删除分支</code>
+          <code class="comment"># 推送分支到远程仓库</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> <span class="string">分支名</span></code>
+          <code class="comment"># 删除分支，-d 参数删除已合并分支，-D 参数强制删除本地分支</code>
           <code><span class="git">git</span> branch -d <span class="string">分支名</span></code>
+          <code class="comment"># 删除远程分支</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> --delete <span class="string">分支名</span></code>
+          <code><span class="git">git</span> push <span class="string">origin</span> :<span class="string">分支名</span> <span class="comment"># 简写形式</span></code>
         </pre>
       </section>
 
