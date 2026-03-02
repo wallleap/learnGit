@@ -340,13 +340,13 @@
         <code><span class="git">git</span> switch feature/xxx</code>
         <code class="comment"># 开发功能并多次提交（示例）</code>
         <code><span class="git">git</span> add .</code>
-        <code><span class="git">git</span> commit -m "feat: 完成xxx功能的核心逻辑"</code>
+        <code><span class="git">git</span> commit -m <span class="string">"feat: 完成xxx功能的核心逻辑"</span></code>
         <code><span class="git">git</span> add .</code>
-        <code><span class="git">git</span> commit -m "feat: 补充xxx功能的边界条件处理"</code>
+        <code><span class="git">git</span> commit -m <span class="string">"feat: 补充xxx功能的边界条件处理"</span></code>
         <code class="comment"># 合并到 dev</code>
         <code><span class="git">git</span> switch dev</code>
         <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
-        <code><span class="git">git</span> merge feature/xxx --no-ff -m "feat: 合并 feature/xxx：新增 xxx 功能"</code>
+        <code><span class="git">git</span> merge feature/xxx --no-ff -m <span class="string">"feat: 合并 feature/xxx：新增 xxx 功能"</span></code>
         <code class="comment"># 推送合并后的 dev 到远程</code>
         <code><span class="git">git</span> push <span class="string">origin</span> dev</code>
         <code class="comment"># 删除 feature/xxx 分支</code>
@@ -374,7 +374,7 @@
         <code><span class="git">git</span> switch main</code>
         <code><span class="git">git</span> pull <span class="string">origin</span> main</code>
         <code class="comment"># 打 Tag v1.0.1</code>
-        <code><span class="git">git</span> tag -a v1.0.1 -m "v1.0.1 发布：修复 yyy 问题，新增 xxx 功能"</code>
+        <code><span class="git">git</span> tag -a v1.0.1 -m <span class="string">"v1.0.1 发布：修复 yyy 问题，新增 xxx 功能"</span></code>
         <code class="comment"># 推送 Tag 到远程</code>
         <code><span class="git">git</span> push <span class="string">origin</span> v1.0.1</code>
         <code class="comment"># 切换分支到 dev</code>
@@ -382,7 +382,7 @@
         <code class="comment"># 拉取 dev 分支最新代码</code>
         <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
         <code class="comment"># 合并 main 分支到 dev</code>
-        <code><span class="git">git</span> merge main -m "同步 main 分支上线代码：v1.0.1 修复 yyy+新增 xxx"</code>
+        <code><span class="git">git</span> merge main -m <span class="string">"同步 main 分支上线代码：v1.0.1 修复 yyy+新增 xxx"</span></code>
         <code class="comment"># 若有冲突，手动解决后提交</code>
         <code class="comment"># git add . && git commit -m "合并 main 到 dev，解决xxx文件冲突"</code>
         <code class="comment"># 推送合并后的 dev 到远程</code>
