@@ -61,6 +61,58 @@
       <pre><code>ssh -T git@github.com</code></pre>
       <p>输出如下内容就代表成功</p>
       <pre><code>Hi username! You've successfully authenticated, but GitHub does not provide shell access.</code></pre>
+      <h3> 同一平台，本地使用多个账号</h3>
+      <p>生成多个密钥对（同一平台不能出现相同的公钥）</p>
+      <pre>
+        <code>ssh-keygen -t ed25519 -C <span class="string">"work@example.com"</span> -f ~/.ssh/id_ed25519_work</code>
+        <code>ssh-keygen -t ed25519 -C <span class="string">"personal@example.com"</span> -f ~/.ssh/id_ed25519_personal</code>
+      </pre>
+      <p>
+        将生成的
+        <code class="inline">~/.ssh/id_ed25519_work.pub</code> 和 <code class="inline">~/.ssh/id_ed25519_personal.pub</code>
+        中的公钥内容放到需要提交的服务器上（追加到 <code class="inline">~/.ssh/authorized_keys</code>
+        文件中）或者在线平台的设置
+        <strong>SSH keys</strong> 新建一个，拷贝对应账号的公钥内容上去
+      </p>
+      <p>配置 SSH 规则</p>
+      <pre>
+        <code class="comment"># 编辑 ~/.ssh/config 文件</code>
+        <code><span class="bash">vi</span> ~/.ssh/config</code>
+      </pre>
+      <p>添加如下内容</p>
+      <pre>
+        <code class="comment"># 工作账号</code>
+        <code>Host <span class="string">work-github</span> <span class="comment"># 最好保留一个 github.com 以便匹配到这个主机名</span></code>
+        <code>&nbsp;&nbsp;HostName github.com</code>
+        <code>&nbsp;&nbsp;IdentityFile <span class="string">~/.ssh/id_ed25519_work</span></code>
+        <code>&nbsp;&nbsp;User git</code>
+        <code>&nbsp;&nbsp;IdentitiesOnly yes</code>
+        <code></code>
+        <code class="comment"># 个人账号</code>
+        <code>Host <span class="string">personal-github</span></code>
+        <code>&nbsp;&nbsp;HostName github.com</code>
+        <code>&nbsp;&nbsp;IdentityFile <span class="string">~/.ssh/id_ed25519_personal</span></code>
+        <code>&nbsp;&nbsp;User git</code>
+        <code>&nbsp;&nbsp;IdentitiesOnly yes</code>
+      </pre>
+      <p>例如，原链接 <code class="inline">git@github.com:username/repo.git</code> 使用工作账号 clone 仓库</p>
+      <pre><code><span class="git">git</span> clone git@work-github:username/repo.git</code></pre>
+      <p>或使用个人账号</p>
+      <pre><code><span class="git">git</span> clone git@personal-github:username/repo.git</code></pre>
+      <p>就是把主机名替换掉，根据配置连接时会使用不同的私钥</p>
+      <p>测试也要使用对应的主机名</p>
+      <pre><code>ssh -T git@work-github</code></pre>
+      <p>如果是另一个平台，那可以接着使用相同的密钥对，例如 <code class="inline">id_ed25519_work</code> 在 GitHub 上上传了对应的公钥，在 GitLab 上也可以上传这个的公钥</p>
+      <p>配置 GitLab 规则 <code class="inline">~/.ssh/config</code></p>
+      <pre>
+        <code class="comment"># 工作账号</code>
+        <code>Host <span class="string">gitlab.com</span></code>
+        <code>&nbsp;&nbsp;HostName gitlab.com</code>
+        <code>&nbsp;&nbsp;IdentityFile <span class="string">~/.ssh/id_ed25519_work</span></code>
+        <code>&nbsp;&nbsp;User git</code>
+        <code>&nbsp;&nbsp;IdentitiesOnly yes</code>
+      </pre>
+      <p>使用 <code class="inline">git@gitlab.com:username/repo.git</code> 克隆仓库时，会使用 <code class="inline">id_ed25519_work</code> 这个密钥对</p>
     </section>
 
     <section>
