@@ -38,6 +38,23 @@ article {
   transition: .3s;
 }
 
+@font-face {
+  font-family: 'PingFang Custom';
+  src: url('../fonts/PingFang-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PingFang Custom';
+  src: url('../fonts/PingFang-Heavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  font-variant: normal;
+  font-stretch: normal;
+}
 
 @media(max-width:750px) and (min-width:360px) {
   body {
@@ -107,6 +124,8 @@ h3 {
   display: block;
   margin-top: 1.2rem;
   margin-bottom: .8em;
+  font-family: 'PingFang Custom', PingFang, sans-serif;
+  font-weight: 900;
 }
 
 ul {
