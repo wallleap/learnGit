@@ -240,7 +240,7 @@ pre code {
   line-height: 1.4;
 }
 
-pre code.comment {
+pre code.comment, pre code span.comment {
   color: #969896;
 }
 
