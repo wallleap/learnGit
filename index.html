@@ -168,15 +168,21 @@
       <pre>
         <code><span class="git">git</span> remote add <span class="string">origin(名字)</span> <span class="string">仓库链接(ssh或https)</span></code>
       </pre>
-      <p>查看远程仓库</p>
+      <p>查看远程仓库别名</p>
       <pre>
+        <code><span class="git">git</span> remote</code>
+        <code class="comment"># 查看远程仓库链接</code>
         <code><span class="git">git</span> remote -v</code>
       </pre>
-      <p>删除远程仓库链接</p>
+      <p>修改远程仓库别名</p>
+      <pre>
+        <code><span class="git">git</span> remote rename <span class="string">origin(原名)</span> <span class="string">new-origin(新名)</span></code>
+      </pre>
+      <p>删除远程仓库别名</p>
       <pre>
         <code><span class="git">git</span> remote remove <span class="string">origin(名字)</span></code>
       </pre>
-      <p>推送本地代码到远程仓库</p>
+      <p>推送本地 <code class="inline">main</code> 分支代码到远程 <code class="inline">main</code> 分支</p>
       <pre>
         <code><span class="git">git</span> push <span class="string">origin</span> main:main</code>
         <code class="comment"># origin 是远程仓库别名、前一个 main 是本地分支名、后一个 main 是远程分支名，相同时可省略后半部分</code>
@@ -188,11 +194,12 @@
       <pre>
         <code><span class="git">git</span> pull <span class="string">origin</span> main:main</code>
         <code class="comment"># origin 是远程仓库别名、前一个 main 是远程分支名、后一个 main 是本地分支名</code>
+        <code class="comment"># git pull = git fetch + git merge</code>
         <code class="comment"># --rebase 参数使用变基，-r 禁用变基强制使用合并</code>
         <code class="comment"># fetch 下载最新更改到本地仓库，但不自动合并到当前分支</code>
-        <code><span class="git">git</span> fetch <span class="string">origin</span></code>
+        <code><span class="git">git</span> fetch <span class="string">origin</span> main</code>
       </pre>
-      <p>克隆远程代码到本地仓库</p>
+      <p>克隆远程代码到本地</p>
       <pre>
         <code><span class="git">git</span> clone <span class="string">仓库链接</span> <span class="string">目录名</span></code>
         <code class="comment"># -b main 指定克隆分支，--depth 1 指定克隆深度</code>
