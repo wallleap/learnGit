@@ -39,10 +39,13 @@
         <p>
           添加了
           <code class="inline">--global</code>
-          是针对全局生效的，如果某个仓库需要单独的，只需在这个仓库中使用没有
-          <code class="inline">--global</code> 的命令配置一遍即可，或使用
-          <code class="inline">--local</code> 针对当前仓库生效
+          是针对全局生效的
         </p>
+        <blockquote>
+          <p>如果某个仓库需要单独的，只需在这个仓库中使用没有
+          <code class="inline">--global</code> 的命令配置一遍即可，或把 <code class="inline">--global</code> 换成
+          <code class="inline">--local</code></p>
+        </blockquote>
         <h3> 生成 keygen</h3>
         <pre><code>ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></code></pre>
         <p>或使用 ed25519 算法</p>
