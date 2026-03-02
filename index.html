@@ -294,7 +294,7 @@
       <section>
         <h2>5. 常用分支名</h2>
         <h3> 核心主分支（仓库的基础分支，长期存在）</h3>
-        <p>不在主分支上直接开发，要保持主分支的稳定性，只用于合并其他分支的代码</p>
+        <p>不在主分支上直接改动，要保持主分支的稳定性，保证功能完整可用、可部署</p>
         <ul>
           <li>
             生产环境代码 <code class="inline">main</code> /
@@ -305,14 +305,65 @@
             <code class="inline">dev</code>
           </li>
         </ul>
-        <p>main 分支设置为保护分支，不允许直接推送代码，只能通过 Pull Request/Merge Request 合并</p>
-        <p>一般基于 dev 分支创建新分支，进行开发或修复 bug、发布新功能等</p>
-        <p>例如开发完成，达到上线标准，基于 dev 分支创建上线分支 release/v1.0.1，推送远程后，通过 Pull Request/Merge Request 合并到 main 分支</p>
+        <p><code class="inline">main</code> 分支设置为保护分支，不允许直接推送代码，只能通过 Pull Request/Merge Request 合并</p>
+        <p>一般基于 <code class="inline">dev</code> 分支创建新分支，进行开发或修复 bug、发布新功能等</p>
+        <h3> 临时开发分支（完成特定任务后删除，短期存在）</h3>
+        <ul>
+          <li>
+            功能分支 <code class="inline">feature/xxx</code> 或
+            <code class="inline">feat/xxx</code
+            >，开发新需求、新功能、新特性（基于 <code class="inline">dev</code> 分支创建，完成后合并回
+            <code class="inline">dev</code>）
+          </li>
+          <li>
+            修复分支 <code class="inline">bugfix/xxx</code> 或
+            <code class="inline">fix/xxx</code>，基于 <code class="inline">dev</code>
+            分支创建，完成后合并回 <code class="inline">dev</code>
+          </li>
+          <li>
+            线上紧急修复分支 <code class="inline">hotfix/xxx</code> 或
+            <code class="inline">hf/xxx</code>，基于 <code class="inline">main</code>
+            分支创建，完成后同时合并回 <code class="inline">main</code> 和 <code class="inline">dev</code> 分支
+          </li>
+          <li>
+            发布分支 <code class="inline">release/xxx</code> 或
+            <code class="inline">rel/xxx</code>，基于 <code class="inline">dev</code>
+            分支创建，完成后合并回 <code class="inline">main</code> 和 <code class="inline">dev</code>
+          </li>
+        </ul>
+        <p>例如<strong>开发新功能 <code class="inline">xxx</code></strong> 时</p>
+        <pre>
+          <code class="comment"># 切换分支到 dev</code>
+          <code><span class="git">git</span> switch dev</code>
+          <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
+          <code class="comment"># 基于当前分支创建新分支 feature/xxx</code>
+          <code><span class="git">git</span> branch feature/xxx</code>
+          <code class="comment"># 切换到新分支</code>
+          <code><span class="git">git</span> switch feature/xxx</code>
+          <code class="comment"># 开发功能并多次提交（示例）</code>
+          <code><span class="git">git</span> add .</code>
+          <code><span class="git">git</span> commit -m "feat: 完成xxx功能的核心逻辑"</code>
+          <code><span class="git">git</span> add .</code>
+          <code><span class="git">git</span> commit -m "feat: 补充xxx功能的边界条件处理"</code>
+          <code class="comment"># 合并到 dev</code>
+          <code><span class="git">git</span> switch dev</code>
+          <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
+          <code><span class="git">git</span> merge feature/xxx --no-ff -m "feat: 合并 feature/xxx：新增 xxx 功能"</code>
+          <code class="comment"># 推送合并后的 dev 到远程</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> dev</code>
+          <code class="comment"># 删除 feature/xxx 分支</code>
+          <code><span class="git">git</span> branch -d feature/xxx</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> --delete feature/xxx</code>
+        </pre>
+        <blockquote>
+          <p>流程：基于 <code class="inline">dev</code> → <code class="inline">feature/xxx</code> + <code class="inline">bugfix/yyy</code> → <code class="inline">dev</code>，后续需要发版时，基于 <code class="inline">dev</code> 创建 <code class="inline">release/a.b.c</code> 分支</p>
+        </blockquote>
+        <p>例如<strong>开发完成，达到上线标准</strong>，基于 <code class="inline">dev</code> 分支创建上线分支 <code class="inline">release/v1.0.1</code>，推送远程后，通过 Pull Request/Merge Request 合并到 <code class="inline">main</code> 分支</p>
         <pre>
           <code class="comment"># 拉取 dev 分支最新代码</code>
           <code><span class="git">git</span> switch dev</code>
           <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
-          <code class="comment"># 切换分支到 release/v1.0.1</code>
+          <code class="comment"># 基于 dev 分支创建上线分支 release/v1.0.1</code>
           <code><span class="git">git</span> switch -c release/v1.0.1</code>
           <code class="comment"># 推送到远程</code>
           <code><span class="git">git</span> push <span class="string">origin</span> release/v1.0.1</code>
@@ -329,7 +380,9 @@
           <code class="comment"># 拉取 dev 分支最新代码</code>
           <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
           <code class="comment"># 合并 main 分支到 dev</code>
-          <code><span class="git">git</span> merge main</code>
+          <code><span class="git">git</span> merge main -m "同步 main 分支上线代码：v1.0.1 修复 yyy+新增 xxx"</code>
+          <code class="comment"># 若有冲突，手动解决后提交</code>
+          <code class="comment"># git add . && git commit -m "合并 main 到 dev，解决xxx文件冲突"</code>
           <code class="comment"># 推送合并后的 dev 到远程</code>
           <code><span class="git">git</span> push <span class="string">origin</span> dev</code>
           <code class="comment"># 删除本地 release/v1.0.1 分支</code>
@@ -337,96 +390,41 @@
           <code class="comment"># 删除远程 release/v1.0.1 分支</code>
           <code><span class="git">git</span> push <span class="string">origin</span> --delete release/v1.0.1</code>
         </pre>
-        <p>流程：feat/bugfix → dev → release → main → 同步回 dev</p>
-        <h3> 临时开发分支（完成特定任务后删除，短期存在）</h3>
-        <ul>
-          <li>
-            功能分支 <code class="inline">feature/xxx</code> 或
-            <code class="inline">feat/xxx</code
-            >，开发新需求、新功能、新特性（基于 develop 分支创建，完成后合并回
-            develop）
-          </li>
-          <li>
-            修复分支 <code class="inline">bugfix/xxx</code> 或
-            <code class="inline">fix/xxx</code>，基于 develop
-            分支创建，完成后合并回 develop
-          </li>
-          <li>
-            线上紧急修复分支 <code class="inline">hotfix/xxx</code> 或
-            <code class="inline">hf/xxx</code>，基于 main
-            分支创建，完成后同时合并回 main 和 develop 分支
-          </li>
-          <li>
-            发布分支 <code class="inline">release/xxx</code> 或
-            <code class="inline">rel/xxx</code>，基于 develop
-            分支创建，完成后合并回 main 和 develop
-          </li>
-        </ul>
-        <p>例如开发新功能 <code class="inline">xxx</code> 时</p>
+        <blockquote>
+          <p>流程：基于 <code class="inline">dev</code> → <code class="inline">release</code> → <code class="inline">main</code> → 同步回 <code class="inline">dev</code></p>
+        </blockquote>
+        <p>例如在开发时需要<strong>紧急修复线上问题</strong> <code class="inline">zzz</code></p>
         <pre>
-          <code class="comment"># 切换分支到 dev</code>
-          <code><span class="git">git</span> switch dev</code>
-          <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
-          <code class="comment"># 基于当前分支创建新分支 feature/xxx</code>
-          <code><span class="git">git</span> branch feature/xxx</code>
-          <code class="comment"># 切换到新分支</code>
-          <code><span class="git">git</span> switch feature/xxx</code>
-          <code class="comment"># 开发功能并多次提交（示例）</code>
-          <code><span class="git">git</span> add .</code>
-          <code><span class="git">git</span> commit -m "feat: 补充xxx功能的边界条件处理完成xxx功能的核心逻辑"</code>
-          <code><span class="git">git</span> add .</code>
-          <code><span class="git">git</span> commit -m "feat: 补充xxx功能的边界条件处理"</code>
-          <code class="comment"># 合并到 dev</code>
-          <code><span class="git">git</span> switch dev</code>
-          <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
-          <code><span class="git">git</span> merge feature/xxx --no-ff -m "feat: 合并 feature/xxx：新增 xxx 功能"</code>
-          <code class="comment"># 推送合并后的 dev 到远程</code>
-          <code><span class="git">git</span> push origin dev</code>
-          <code class="comment"># 删除 feature/xxx 分支</code>
-          <code><span class="git">git</span> branch -d feature/xxx</code>
-          <code><span class="git">git</span> push origin --delete feature/xxx</code>
-        </pre>
-        <p>例如在开发时需要紧急修复线上问题 <code class="inline">yyy</code></p>
-        <pre>
-          <code class="comment"># 保存当前修改</code>
+          <code class="comment"># 保存当前修改（在 feature/xxx 分支上）</code>
           <code><span class="git">git</span> stash save -a <span class="string">"开发 feature/xxx 时临时保存，紧急修复 bugfix/yyy"</span></code>
           <code class="comment"># 从当前分支 feature/xxx 切换分支到 main</code>
           <code><span class="git">git</span> switch main</code>
           <code><span class="git">git</span> pull <span class="string">origin</span> main</code>
-          <code class="comment"># 基于当前分支创建并切换到新分支 hotfix/yyy</code>
-          <code><span class="git">git</span> switch -c hotfix/yyy</code>
+          <code class="comment"># 基于当前分支创建并切换到新分支 hotfix/zzz</code>
+          <code><span class="git">git</span> switch -c hotfix/zzz</code>
           <code class="comment"># 修复 bug 并提交</code>
           <code><span class="git">git</span> add .</code>
-          <code><span class="git">git</span> commit -m "fix: 修复 yyy 问题，解决 xxx 场景的异常情况"</code>
-          <code class="comment"># 合并到 dev</code>
-          <code><span class="git">git</span> switch dev</code>
-          <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
-          <code><span class="git">git</span> merge hotfix/yyy -m "fix: 合并 hotfix/yyy：修复 yyy 问题"</code>
-          <code class="comment"># 推送合并后的 dev 到远程</code>
-          <code><span class="git">git</span> push origin dev</code>
-          <code class="comment"># 删除 hotfix/yyy 分支</code>
-          <code><span class="git">git</span> branch -d hotfix/yyy</code>
-          <code><span class="git">git</span> push origin --delete hotfix/yyy</code>
-          <code class="comment"># 基于 dev 分支创建并切换到新分支 release/va.b.c</code>
-          <code class="comment"># 并且推送到远程，PR 合并到 main 分支，打 Tag va.b.c</code>
-          <code><span class="git">git</span> switch release/va.b.c</code>
-          <code><span class="git">git</span> push <span class="string">origin</span> release/va.b.c</code>
+          <code><span class="git">git</span> commit -m <span class="string">"fix: 修复 zzz 问题，解决 xxx 场景的异常情况"</span></code>
+          <code class="comment"># 推送 hotfix/zzz 到远程</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> hotfix/zzz</code>
+          <code class="comment"># 打开 PR/MR，代码 review 后合并到 main</code>
+          <code class="comment"># 本地拉取 main 最新代码</code>
           <code><span class="git">git</span> switch main</code>
           <code><span class="git">git</span> pull <span class="string">origin</span> main</code>
-          <code><span class="git">git</span> tag -a va.b.c -m "v1.0.1 发布：修复 yyy 问题，新增 xxx 功能"</code>
-          <code><span class="git">git</span> push <span class="string">origin</span> va.b.c</code>
+          <code class="comment"># 打 Tag v1.0.2（最后一位修复版本号 + 1）</code>
+          <code><span class="git">git</span> tag -a v1.0.2 -m <span class="string">"v1.0.2 发布：修复 zzz 问题"</span></code>
+          <code><span class="git">git</span> push <span class="string">origin</span> v1.0.2</code>
           <code class="comment"># 切换分支到 dev</code>
           <code><span class="git">git</span> switch dev</code>
           <code class="comment"># 拉取 dev 分支最新代码</code>
           <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
-          <code class="comment"># 合并 main 分支到 dev</code>
-          <code><span class="git">git</span> merge main</code>
+          <code class="comment"># 合并 main 分支到 dev（也可以直接合并 hotfix/zzz 分支）→ 需要写明合并来源</code>
+          <code><span class="git">git</span> merge main -m <span class="string">"同步 main 分支的 hotfix：v1.0.2 修复线上 zzz 问题"</span></code>
           <code class="comment"># 推送合并后的 dev 到远程</code>
           <code><span class="git">git</span> push <span class="string">origin</span> dev</code>
-          <code class="comment"># 删除本地 release/va.b.c 分支</code>
-          <code><span class="git">git</span> branch -d release/va.b.c</code>
-          <code class="comment"># 删除远程 release/va.b.c 分支</code>
-          <code><span class="git">git</span> push <span class="string">origin</span> --delete release/va.b.c</code>
+          <code class="comment"># 删除 hotfix/zzz 分支</code>
+          <code><span class="git">git</span> branch -d hotfix/zzz</code>
+          <code><span class="git">git</span> push <span class="string">origin</span> --delete hotfix/zzz</code>
           <code class="comment"># 切换回 feature/xxx 分支</code>
           <code><span class="git">git</span> switch feature/xxx</code>
           <code class="comment"># 恢复之前保存的代码</code>
@@ -436,7 +434,7 @@
           <code><span class="git">git</span> switch dev</code>
           <code><span class="git">git</span> pull <span class="string">origin</span> dev</code>
           <code class="comment"># 合并 feature/xxx 分支到 dev 分支</code>
-          <code><span class="git">git</span> merge feature/xxx</code>
+          <code><span class="git">git</span> merge feature/xxx -m <span class="string">"合并 feature/xxx 分支到 dev 分支，新增 xxx 功能"</span></code>
           <code class="comment"># CONFLICT: 合并时发生冲突，需要手动解决，解决后提交</code>
           <code><span class="git">git</span> add .</code>
           <code><span class="git">git</span> commit -m <span class="string">"合并 feature/xxx 分支到 dev 分支，解决冲突"</span></code>
@@ -446,6 +444,17 @@
           <code><span class="git">git</span> branch -d feature/xxx</code>
           <code><span class="git">git</span> push <span class="string">origin</span> --delete feature/xxx</code>
         </pre>
+        <blockquote>
+          <p>流程：基于 <code class="inline">main</code> → <code class="inline">hotfix/zzz</code> → <code class="inline">main</code> → 同步回 <code class="inline">dev</code></p>
+        </blockquote>
+        <p>注意：</p>
+        <blockquote>
+          <ol>
+            <li>切换到主分支/线上存在的分支，需要先拉取最新代码</li>
+            <li>合并时可能会发生冲突，需要手动解决</li>
+            <li>合并完成后，及时删除临时分支</li>
+          </ol>
+        </blockquote>
         <h3> 其他特殊场景分支</h3>
         <ul>
           <li>
