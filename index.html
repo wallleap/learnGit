@@ -205,25 +205,55 @@
       <section>
         <h2>3. 冲突解决</h2>
         <p>
-          避免使用 <code class="inline">merge</code>，而默认的
-          <code class="inline">git pull</code> 为
-          <code class="inline">git fetch</code> +
-          <code class="inline">git merge</code>
+          当在不同分支上对同一个文件同一行（或相邻行）代码进行了不同的修改，合并/变基时（<code class="inline">git merge</code> / <code class="inline">git rebase</code>）就会发生冲突（<code class="inline">CONFLICT</code>），这时候需要<strong>手动</strong>解决冲突。
         </p>
-        <h3> 手动使用 rebase</h3>
         <pre>
-          <code class="comment"># 先暂存代码</code>
-          <code><span class="git">git</span> stash</code>
-          <code class="comment"># 分开 fetch 并 rebase 或使用 git pull --rebase</code>
-          <code><span class="git">git</span> fetch</code>
-          <code><span class="git">git</span> rebase</code>
-          <code class="comment"># 查看封存记录</code>
-          <code><span class="git">git</span> stash list</code>
-          <code class="comment"># 恢复最新变更，或使用 pop</code>
-          <code><span class="git">git</span> stash apply</code>
-          <code class="comment"># 恢复列表中指定变更</code>
-          <code><span class="git">git</span> stash apply <span class="string">stash编号</span></code>
+          <code class="comment"># 查看冲突文件</code>
+          <code><span class="git">git</span> status</code>
+          <code class="comment"># Unmerged paths:</code>
+          <code class="comment"># &nbsp;&nbsp;(use "git add/rm <file>..." as appropriate to mark resolution)</code>
+          <code class="comment"># &nbsp;&nbsp;both modified:&nbsp;&nbsp;文件名</code>
         </pre>
+        <p>打开冲突文件，会看到类似如下内容</p>
+        <pre>
+          <code class="comment"># 冲突部分</code>
+          <code class="conflict"><<<<<<< HEAD</code>
+          <code class="conflict">当前分支的代码</code>
+          <code class="conflict">=======</code>
+          <code class="conflict">待合并分支的代码</code>
+          <code class="conflict">>>>>>>> 分支名</code>
+        </pre>
+        <p>
+          解决冲突的方法有很多种，可以将冲突部分的内容修改为自己需要的内容，然后删除
+          <code class="inline"><<<<<<< HEAD</code>、
+          <code class="inline">=======</code>、
+          <code class="inline">>>>>>>> 分支名</code>
+          这三行，最后提交。
+        </p>
+        <p>或者使用编辑器（如 VS Code）打开文件，手动选择需要保留的冲突内容，解决冲突后，保存文件，最后提交即可</p>
+        <pre>
+          <code class="comment"># 提交解决冲突后的代码</code>
+          <code><span class="git">git</span> add .</code>
+          <code><span class="git">git</span> commit -m <span class="string">"解决冲突后的提交说明"</span></code>
+          <code class="comment"># 查看状态，确认解决冲突后的代码已提交</code>
+          <code><span class="git">git</span> status</code>
+          <code class="comment"># nothing to commit, working tree clean</code>
+        </pre>
+        <p><code class="inline">rebase</code> 需要用 <code class="inline">--continue</code> 继续操作</p>
+        <pre>
+          <code><span class="git">git</span> add <span class="string">文件名</span></code>
+          <code class="comment"># 继续 rebase 操作</code>
+          <code><span class="git">git</span> rebase --continue</code>
+        </pre>
+        <p>如果还有其他冲突文件，重复以上操作，直到所有冲突文件都解决，如果想放弃本次 rebase 操作，可执行 <code class="inline">git rebase --abort</code></p>
+        <pre>
+          <code class="comment"># 最后验证</code>
+          <code><span class="git">git</span> status</code>
+          <code class="comment"># nothing to commit, working tree clean</code>
+        </pre>
+        <blockquote>
+          <p>因此开发的时候推荐拆分成多个小提交，而不是一次性提交大量代码，冲突时更容易定位和解决</p>
+        </blockquote>
       </section>
 
       <section>
