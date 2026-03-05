@@ -531,91 +531,82 @@
 
     <section>
       <h2>6. Conventional Commits（约定式提交） 规范</h2>
+      <p>Conventional Commits 是一套标准化的 Git 提交信息规范，格式为：<code class="inline">&lt;类型&gt;[可选作用域]: &lt;描述&gt;</code>，其中：</p>
+      <ul>
+        <li>类型：标识提交的核心目的（必填）；</li>
+        <li>作用域：可选，指定提交影响的模块/范围（如 login、order、api）；</li>
+        <li>描述：简短描述变更内容（首字母小写，结尾不加标点）；</li>
+        <li>可选扩展：<code class="inline">!</code> 标识破坏性变更（如 <code class="inline">feat!: 移除用户登录接口</code>）。</li>
+      </ul>
+
       <h3> <code class="inline">feat</code> - 新增功能（feature）</h3>
       <ul>
         <li><code class="inline">feat: 新增用户登录功能</code></li>
-        <li><code class="inline">feat: 实现商品列表分页查询</code></li>
-        <li><code class="inline">feat: 添加微信支付回调接口</code></li>
+        <li><code class="inline">feat(order): 实现商品列表分页查询</code></li>
+        <li><code class="inline">feat(pay): 添加微信支付回调接口</code></li>
       </ul>
-      <h3> <code class="inline">fix</code> - 修复 Bug</h3>
+
+      <h3> <code class="inline">fix</code> - 修复 Bug（生产环境/测试环境的功能缺陷）</h3>
       <ul>
-        <li><code class="inline">fix: 修复登录验证码不显示的问题</code></li>
-        <li><code class="inline">fix: 解决订单金额计算错误 Bug</code></li>
-        <li><code class="inline">fix: 修复线上支付失败的紧急问题</code></li>
+        <li><code class="inline">fix(login): 修复登录验证码不显示的问题</code></li>
+        <li><code class="inline">fix(order): 解决订单金额计算错误的问题</code></li>
+        <li><code class="inline">fix(pay): 修复线上支付失败的紧急问题</code></li>
       </ul>
-      <h3> <code class="inline">docs</code> - 文档更新</h3>
+
+      <h3> <code class="inline">docs</code> - 文档更新（仅文档内容变更，无代码修改）</h3>
       <ul>
         <li><code class="inline">docs: 更新 README 中的部署步骤</code></li>
-        <li><code class="inline">docs: 补充接口文档的参数说明</code></li>
-        <li><code class="inline">docs: 完善代码中的注释说明</code></li>
+        <li><code class="inline">docs(api): 补充接口文档的参数说明</code></li>
+        <li><code class="inline">docs(utils): 完善代码中的注释说明</code></li>
       </ul>
-      <h3> <code class="inline">style</code> - 代码格式调整（不影响功能）</h3>
+
+      <h3> <code class="inline">style</code> - 代码格式调整（不影响功能逻辑）</h3>
+      <p>仅包含：缩进、空格、换行、引号风格、代码格式化（如 ESLint 自动修复），不涉及变量命名、逻辑变更。</p>
       <ul>
-        <li>
-          <code class="inline">style: 格式化代码缩进（符合 ESLint 规范）</code>
-        </li>
-        <li><code class="inline">style: 调整变量命名，统一驼峰式</code></li>
-        <li><code class="inline">style: 删除多余的空行和注释</code></li>
+        <li><code class="inline">style: 格式化代码缩进（符合 ESLint 规范）</code></li>
+        <li><code class="inline">style(components): 调整代码换行，统一单行/多行写法</code></li>
+        <li><code class="inline">style: 删除代码中多余的空行和注释</code></li>
       </ul>
-      <h3> <code class="inline">refactor</code> - 代码重构（不影响功能）</h3>
+
+      <h3> <code class="inline">refactor</code> - 代码重构（不新增功能、不修复 Bug）</h3>
       <ul>
-        <li>
-          <code class="inline">refactor: 重构用户服务模块，提取公共工具类</code>
-        </li>
-        <li>
-          <code class="inline">refactor: 优化接口请求封装，简化代码逻辑</code>
-        </li>
-        <li>
-          <code class="inline">refactor: 拆分超大组件，提高可维护性</code>
-        </li>
+        <li><code class="inline">refactor(user): 重构用户服务模块，提取公共工具类</code></li>
+        <li><code class="inline">refactor(api): 优化接口请求封装，简化代码逻辑</code></li>
+        <li><code class="inline">refactor(components): 拆分超大组件，提高可维护性</code></li>
+        <li><code class="inline">refactor: 调整变量命名，统一驼峰式规范</code></li>
       </ul>
-      <h3> <code class="inline">test</code> - 测试相关</h3>
+
+      <h3> <code class="inline">test</code> - 测试相关（添加/修改/修复测试代码）</h3>
       <ul>
-        <li><code class="inline">test: 为用户登录功能添加单元测试</code></li>
-        <li><code class="inline">test: 完善订单模块的集成测试用例</code></li>
+        <li><code class="inline">test(login): 为用户登录功能添加单元测试</code></li>
+        <li><code class="inline">test(order): 完善订单模块的集成测试用例</code></li>
         <li><code class="inline">test: 修复测试代码中的断言错误</code></li>
       </ul>
-      <h3> <code class="inline">chore</code> - 构建 / 工程配置 /
-        辅助工具变更（不涉及业务代码）
-      </h3>
+
+      <h3> <code class="inline">chore</code> - 构建/依赖/工程配置变更（非业务代码）</h3>
       <ul>
-        <li>
-          <code class="inline">chore: 升级 axios 依赖到 1.6.0 版本</code>
-        </li>
+        <li><code class="inline">chore: 升级 axios 依赖到 1.6.0 版本</code></li>
         <li><code class="inline">chore: 配置 Webpack 打包优化参数</code></li>
-        <li>
-          <code class="inline">chore: 添加 .gitignore 忽略日志文件</code>
-        </li>
-        <li>
-          <code class="inline">chore: 更新 ESLint 配置规则</code>
-        </li>
+        <li><code class="inline">chore: 添加 .gitignore 忽略日志文件</code></li>
+        <li><code class="inline">chore: 更新 ESLint 配置规则</code></li>
       </ul>
-      <h3> <code class="inline">perf</code> - 性能优化</h3>
+
+      <h3> <code class="inline">perf</code> - 性能优化（提升代码执行效率/资源占用）</h3>
       <ul>
-        <li>
-          <code class="inline">perf: 优化商品列表查询速度，添加缓存</code>
-        </li>
-        <li>
-          <code class="inline">perf: 减少 DOM 操作，提升页面渲染性能</code>
-        </li>
+        <li><code class="inline">perf(list): 优化商品列表查询速度，添加缓存</code></li>
+        <li><code class="inline">perf(page): 减少 DOM 操作，提升页面渲染性能</code></li>
       </ul>
-      <h3> <code class="inline">revert</code> - 回滚提交</h3>
+
+      <h3> <code class="inline">revert</code> - 回滚已提交的代码变更</h3>
       <ul>
-        <li>
-          <code class="inline">revert: 回滚 "feat: 新增用户登录功能"</code>
-        </li>
-        <li>
-          <code class="inline">revert: 撤销 fix: 修复订单金额计算错误 Bug</code>
-        </li>
+        <li><code class="inline">revert: feat: 新增用户登录功能</code></li>
+        <li><code class="inline">revert: fix(order): 修复订单金额计算错误的问题</code></li>
       </ul>
-      <h3> <code class="inline">ci</code> - 持续集成 / 持续部署配置变更</h3>
+
+      <h3> <code class="inline">ci</code> - 持续集成/部署（CI/CD）配置变更</h3>
       <ul>
-        <li>
-          <code class="inline">ci: 配置 GitHub Actions 自动打包部署</code>
-        </li>
-        <li>
-          <code class="inline">ci: 调整 GitLab CI 测试步骤的超时时间</code>
-        </li>
+        <li><code class="inline">ci: 配置 GitHub Actions 自动打包部署</code></li>
+        <li><code class="inline">ci: 调整 GitLab CI 测试步骤的超时时间</code></li>
       </ul>
     </section>
 
