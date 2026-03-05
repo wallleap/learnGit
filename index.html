@@ -618,6 +618,104 @@
         </li>
       </ul>
     </section>
+
+    <section>
+      <h2>7. GitHub Workflow</h2>
+      <p>GitHub Workflow 是 GitHub Actions 的核心组成部分，通过仓库中 <code class="inline">.github/workflows/</code> 目录下的 YAML 文件定义自动化流程，可实现代码检查、打包、部署、发布等自动化任务。</p>
+      
+      <h3> 工作流文件</h3>
+      <p>工作流文件为 YAML 格式（后缀为 <code class="inline">.yml</code> 或 <code class="inline">.yaml</code>），存放于仓库的 <code class="inline">.github/workflows</code> 目录下，文件名可自定义（如 <code class="inline">ci.yml</code>、<code class="inline">deploy.yml</code>、<code class="inline">release.yml</code> 等），一个仓库可包含多个工作流文件。</p>
+      
+      <h3> 工作流核心组成</h3>
+      <p>一个完整的工作流文件通常包含以下核心字段：</p>
+      <ul>
+        <li><code class="inline">name</code>：工作流的名称，会显示在 GitHub 仓库的 Actions 面板中，可选字段</li>
+        <li><code class="inline">on</code>：触发工作流的事件（必填），支持 <code class="inline">push</code>（代码推送）、<code class="inline">pull_request</code>（PR 提交）、<code class="inline">schedule</code>（定时任务）、<code class="inline">release</code>（发布事件）或 <code class="inline">tags</code>（标签推送）等</li>
+        <li><code class="inline">permissions</code>：定义工作流运行时的权限（如 <code class="inline">contents: write</code> 允许写入仓库内容），可选字段</li>
+        <li><code class="inline">jobs</code>：工作流的核心任务集合，每个 job 代表一个独立的执行单元，默认并行运行</li>
+        <li><code class="inline">jobs.<job_id>.runs-on</code>：指定 job 运行的环境（如 <code class="inline">ubuntu-latest</code>、<code class="inline">windows-latest</code>），必填</li>
+        <li><code class="inline">jobs.<job_id>.needs</code>：指定 job 的依赖关系，控制任务串行执行（如依赖其他 job 完成后再运行）</li>
+        <li><code class="inline">jobs.<job_id>.steps</code>：每个 job 包含的具体操作步骤（如运行命令、调用 Action、上传产物等）</li>
+        <li><code class="inline">jobs.<job_id>.environment</code>：关联 GitHub 环境配置（如部署前审批、环境专属变量），非运行环境</li>
+        <li><code class="inline">secrets</code>：仓库/组织级别的敏感信息（如 API 密钥、Token），需在 steps 中引用（非工作流顶层字段）</li>
+      </ul>
+      
+      <h3> 工作流触发事件</h3>
+      <p>工作流通过 <code class="inline">on</code> 字段触发，常见触发场景：</p>
+      <ul>
+        <li>代码推送/PR：<code class="inline">push: { branches: ["main"] }</code>、<code class="inline">pull_request: { types: [opened, synchronize] }</code></li>
+        <li>标签推送：<code class="inline">push: { tags: ["v*"] }</code>（匹配 v1.0、v2.1 等版本标签）</li>
+        <li>定时任务：<code class="inline">schedule: { cron: "0 0 * * *" }</code>（UTC 时间每天凌晨执行）</li>
+        <li>手动触发：<code class="inline">workflow_dispatch:</code>（在 Actions 面板手动启动）</li>
+      </ul>
+      
+      <h3> 工作流任务（Jobs）</h3>
+      <p>一个工作流可定义多个 jobs，默认并行执行；通过 <code class="inline">needs</code> 字段可指定 job 依赖，实现串行执行。每个 job 包含多个 steps，步骤支持：</p>
+      <ul>
+        <li>运行 shell 命令（<code class="inline">run</code> 字段）；</li>
+        <li>调用官方/第三方 Action（<code class="inline">uses</code> 字段）；</li>
+        <li>上传/下载构建产物（Artifacts）；</li>
+        <li>设置环境变量、秘钥等。</li>
+      </ul>
+      
+      <h3> 示例：标签触发的打包发布工作流</h3>
+      <pre>
+        <code class="comment"># 工作流名称：标签发布</code>
+        <code>name:&nbsp;tag release</code>
+        <code></code>
+        <code class="comment"># 触发条件：推送以 v 开头的标签（如 v1.0.0）</code>
+        <code>on:</code>
+        <code>&nbsp;&nbsp;push:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;tags:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;"v*"</code>
+        <code></code>
+        <code class="comment"># 权限配置：允许写入仓库内容（用于创建 Release）</code>
+        <code>permissions:</code>
+        <code>&nbsp;&nbsp;contents:&nbsp;write</code>
+        <code></code>
+        <code>jobs:</code>
+        <code class="comment">&nbsp;&nbsp;# 第一个任务：打包项目文件</code>
+        <code>&nbsp;&nbsp;package:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;runs-on:&nbsp;ubuntu-latest <code class="comment"># 运行在 Ubuntu 最新版 Runner 上</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;steps:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;Checkout&nbsp;code</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uses:&nbsp;actions/checkout@v4 <code class="comment"># 拉取仓库代码</code></code>
+        <code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;Package&nbsp;files</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;run:&nbsp;|</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 创建临时目录，避免竞态条件</span></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="shell">mkdir</span>&nbsp;-p&nbsp;<span class="string">/tmp/ethereal</span></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="shell">cp</span>&nbsp;-r&nbsp;.&nbsp;<span class="string">/tmp/ethereal/</span></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 清理不需要打包的目录</span></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="shell">rm</span>&nbsp;-rf&nbsp;<span class="string">/tmp/ethereal/.github</span>&nbsp;<span class="string">/tmp/ethereal/dist</span>&nbsp;<span class="string">/tmp/ethereal/.git</span></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 打包为 tar.gz 压缩包</span></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="shell">tar</span>&nbsp;-czvf&nbsp;<span class="string">ethereal.tar.gz</span>&nbsp;-C&nbsp;<span class="string">/tmp/ethereal</span>&nbsp;.</code>
+        <code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;Upload&nbsp;artifact</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uses:&nbsp;actions/upload-artifact@v4 <code class="comment"># 上传打包文件为产物</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;ethereal <code class="comment"># 产物名称</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path:&nbsp;ethereal.tar.gz <code class="comment"># 产物路径</code></code>
+        <code></code>
+        <code class="comment">&nbsp;&nbsp;# 第二个任务：创建 GitHub Release</code>
+        <code>&nbsp;&nbsp;release:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;runs-on:&nbsp;ubuntu-latest</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;needs:&nbsp;package <code class="comment"># 依赖 package 任务完成后执行</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;steps:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;Download&nbsp;artifacts</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uses:&nbsp;actions/download-artifact@v4 <code class="comment"># 下载打包产物</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;ethereal</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path:&nbsp;. <code class="comment"># 下载到当前目录</code></code>
+        <code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;Create&nbsp;GitHub&nbsp;release</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uses:&nbsp;softprops/action-gh-release@v2 <code class="comment"># 调用 Release 生成 Action</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generate_release_notes:&nbsp;true <code class="comment"># 自动生成发布说明</code></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files:&nbsp;|</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethereal.tar.gz <code class="comment"># 附加打包文件到 Release</code></code>
+      </pre>
+    </section>
   </article>
 </body>
 
